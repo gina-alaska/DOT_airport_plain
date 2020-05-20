@@ -1,2 +1,2 @@
-# DOT_airport_plain
-Alaska DOT airport plain script to find obstructions higher than the approach plain.
+# DOT_airport_plane
+Alaska DOT airport plane script to find obstructions higher than the approach plane.
