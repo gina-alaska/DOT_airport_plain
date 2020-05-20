@@ -55,5 +55,4 @@ print()
 
 # Process LAS data
 for row in csv_data:
-  print(row)
-  laspf.convert_xyz(row['Point1'])
+  print(laspf.convert_xyz(row['Point1']))

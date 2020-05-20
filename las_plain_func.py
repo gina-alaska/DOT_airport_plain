@@ -7,7 +7,9 @@ import math
 
 # Pull out xyz values from CSV file
 def convert_xyz(point):
-  print(point)
+  points = point.split(" ")
+
+  return [float(points[0]), float(points[1]), float(points[2])]
 
 # Function to find equation of plane (aX + bY + cZ + d = 0)
 # returns a, b, c, d
