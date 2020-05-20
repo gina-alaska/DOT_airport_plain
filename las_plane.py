@@ -53,6 +53,9 @@ print("Software used: " + str(las_header.generating_software))
 print("Number of points: " + str(las_header.point_count))
 print()
 
+# Get some stats
+max_z = las_header.z_max
+
 # Process LAS data
 for row in csv_data:                                         # Process each plane in the plane file
   # Get all of the plane data from CSV file
@@ -60,10 +63,16 @@ for row in csv_data:                                         # Process each plan
   point1 = laspf.convert_xyz(row['Point1'])                  # Get the first defined point of the plane
   point2 = laspf.convert_xyz(row['Point2'])                  # Get the second defined point of the plane
   point3 = laspf.convert_xyz(row['Point3'])                  # Get the third defined point of the plane
-  print(point1, point2, point3)
+
+  if point1[2]>max_z and point2[2]>max_z and point3[2]>max_z:
+    print("The highest point is lower than all of the plane points")
 
   # Calculate plane equation
   equation = laspf.equation_plane(point1, point2, point3)
+
+  for x in range(10):
+    point = [las_data.x[x], las_data.y[x], las_data.z[x]]
+    laspf.shortest_distance(point, equation)
 
 # Close CSV file
 csvfile.close()

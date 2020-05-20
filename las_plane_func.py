@@ -31,10 +31,10 @@ def equation_plane(point1, point2, point3):
   return equation
 
 # Function to find distance 
-def shortest_distance(x1, y1, z1, equation):  
+def shortest_distance(point, equation):  
       
   #d = abs((a * x1 + b * y1 + c * z1 + d))   
-  d = ((equation[0] * x1 + equation[1] * y1 + equation[2] * z1 + equation[3]))
+  d = ((equation[0] * point[0] + equation[1] * point[1] + equation[2] * point[2] + equation[3]))
   e = (math.sqrt(equation[0] * equation[0] + equation[1] * equation[1] + equation[2] * equation[2]))
   distance = d / e
   print("Perpendicular distance is", distance)
