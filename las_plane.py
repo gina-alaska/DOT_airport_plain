@@ -17,6 +17,7 @@ import csv                        # csv module to read csv files
 import numpy as np                # numpy for math operations
 import argparse                   # argparse to get command line parameters/options
 import os                         # os check to see if files exist
+import math                       # math for sqrt function
 
 # Import functions
 import las_plane_func as laspf    # import script functions
@@ -25,7 +26,10 @@ import las_plane_func as laspf    # import script functions
 parser = argparse.ArgumentParser()
 parser.add_argument("las_file", help="LAS file to load (.las/.laz)")      # las file to load
 parser.add_argument("plane_file", help="CSV file with plane data")        # csv file with plane point data
+parser.add_argument("threshold", help="Threshold over the plane")         # csv file with plane point data
 args = parser.parse_args()                                                # parse
+
+threshold = args.threshold                                                # get threshold from command line
 
 # Load plane csv file if it exists
 if not os.path.exists(args.plane_file):
@@ -56,6 +60,11 @@ print()
 # Get some stats
 max_z = las_header.z_max
 
+# Assign LAS data to numpy arrays
+las_x = np.array(las_data.x)
+las_y = np.array(las_data.y)
+las_z = np.array(las_data.z)
+
 # Process LAS data
 for row in csv_data:                                         # Process each plane in the plane file
   # Get all of the plane data from CSV file
@@ -65,14 +74,21 @@ for row in csv_data:                                         # Process each plan
   point3 = laspf.convert_xyz(row['Point3'])                  # Get the third defined point of the plane
 
   if point1[2]>max_z and point2[2]>max_z and point3[2]>max_z:
-    print("The highest point is lower than all of the plane points")
+    print("The highest point in the file is lower than all of the plane points!")
 
   # Calculate plane equation
   equation = laspf.equation_plane(point1, point2, point3)
+  e = (math.sqrt(equation[0] * equation[0] + equation[1] * equation[1] + equation[2] * equation[2]))
+
+  print("\nProcessing ", end="", flush=True)
+
+  d = (equation[0] * las_x + equation[1] * las_y + equation[2] * las_z + equation[3])
+  distances = d / e
+
+  print("done")
 
   for x in range(10):
-    point = [las_data.x[x], las_data.y[x], las_data.z[x]]
-    laspf.shortest_distance(point, equation)
+    print(distances[x])
 
 # Close CSV file
 csvfile.close()

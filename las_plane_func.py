@@ -3,7 +3,6 @@
 #
 
 # import modules
-import math
 
 # Pull out xyz values from CSV file
 def convert_xyz(point):
@@ -31,18 +30,19 @@ def equation_plane(point1, point2, point3):
   return equation
 
 # Function to find distance 
-def shortest_distance(point, equation):  
+# This function is no longer needed, converted it to numpy
+def shortest_distance(point, equation, e):  
       
   #d = abs((a * x1 + b * y1 + c * z1 + d))   
   d = ((equation[0] * point[0] + equation[1] * point[1] + equation[2] * point[2] + equation[3]))
-  e = (math.sqrt(equation[0] * equation[0] + equation[1] * equation[1] + equation[2] * equation[2]))
+  # e = (math.sqrt(equation[0] * equation[0] + equation[1] * equation[1] + equation[2] * equation[2]))
   distance = d / e
-  print("Perpendicular distance is", distance)
-  if distance > 0:
-    print("point is above the plane")
-  if distance < 0:
-    print("point is below the plane")
-  if distance == 0:
-    print("point is on the plane")
+  # print("Perpendicular distance is", distance)
+  # if distance > 0:
+  #   print("point is above the plane")
+  # if distance < 0:
+  #   print("point is below the plane")
+  # if distance == 0:
+  #   print("point is on the plane")
 
   return distance
