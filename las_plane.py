@@ -84,11 +84,12 @@ for row in csv_data:                                         # Process each plan
 
   d = (equation[0] * las_x + equation[1] * las_y + equation[2] * las_z + equation[3])
   distances = d / e
+  dist_above = distances[distances > 0]
 
   print("done")
 
   for x in range(10):
-    print(distances[x])
+    print(dist_above[x])
 
 # Close CSV file
 csvfile.close()
