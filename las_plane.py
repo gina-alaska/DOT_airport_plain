@@ -55,6 +55,8 @@ print("LAS file: " + args.las_file)
 print("Creation date: " + str(las_header.date))
 print("Software used: " + str(las_header.generating_software))
 print("Number of points: " + str(las_header.point_count))
+print("Min Values: " + str(las_header.mins))
+print("Max Values: " + str(las_header.maxs))
 print()
 
 # Get some stats
@@ -80,16 +82,30 @@ for row in csv_data:                                         # Process each plan
   equation = laspf.equation_plane(point1, point2, point3)
   e = (math.sqrt(equation[0] * equation[0] + equation[1] * equation[1] + equation[2] * equation[2]))
 
-  print("\nProcessing ", end="", flush=True)
+  print("\nProcessing " + name + " ...", end="", flush=True)
 
   d = (equation[0] * las_x + equation[1] * las_y + equation[2] * las_z + equation[3])
   distances = d / e
-  dist_above = distances[distances > 0]
+  dist_ind = np.where(distances > 0)
 
+  # Check for no high points
+  if not dist_ind:
+    print("There are no points above the plane " + name)
+    continue
+
+  # Gather data for output las file
+  out_x = las_x[dist_ind]
+  out_y = las_y[dist_ind]
+  out_z = las_z[dist_ind]
+
+  las_out = pylas.create()
+  las_out.x = out_x
+  las_out.y = out_y
+  las_out.z = out_z
+  
+  # Write .las file
+  las_out.write(name + ".las")
   print("done")
-
-  for x in range(10):
-    print(dist_above[x])
 
 # Close CSV file
 csvfile.close()
