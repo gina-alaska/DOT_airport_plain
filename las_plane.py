@@ -92,8 +92,8 @@ for row in csv_data:                                         # Process each plan
   else:
     dist_ind = np.where(distances > 0)
 
-  for x in range(10):
-    print(distances[dist_ind[0][x]])
+  # for x in range(10):
+  #   print(distances[dist_ind[0][x]])
 
   # Check for no high points
   if not dist_ind:
