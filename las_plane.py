@@ -86,7 +86,14 @@ for row in csv_data:                                         # Process each plan
 
   d = (equation[0] * las_x + equation[1] * las_y + equation[2] * las_z + equation[3])
   distances = d / e
-  dist_ind = np.where(distances > 0)
+
+  if equation[0]<0 and equation[1]<0 and equation[2]<0:
+    dist_ind = np.where(distances < 0)
+  else:
+    dist_ind = np.where(distances > 0)
+
+  for x in range(10):
+    print(distances[dist_ind[0][x]])
 
   # Check for no high points
   if not dist_ind:
@@ -94,9 +101,9 @@ for row in csv_data:                                         # Process each plan
     continue
 
   # Gather data for output las file
-  out_x = las_x[dist_ind]
-  out_y = las_y[dist_ind]
-  out_z = las_z[dist_ind]
+  out_x = las_x[dist_ind[0]]
+  out_y = las_y[dist_ind[0]]
+  out_z = las_z[dist_ind[0]]
 
   las_out = pylas.create()
   las_out.x = out_x
